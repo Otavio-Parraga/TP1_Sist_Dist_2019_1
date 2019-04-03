@@ -1,0 +1,9 @@
+ - peer conseguir se comunicar com o servidor e fazer login enviando nome e recursos
+ - armazenar os peers associá-los aos seus recursos em um hash map
+ - solicitaçao do peer para o servidor e resposta do mesmo
+ - conexão entre os peers e troca de informação
+ - mensagens a cada 5 segundos para garantir que o peer continua na rede
+
+-----------------PERGUNTAS---------------------------
+
+ - Se haverá problema fazer nesse formato de uma mesma thread com 3 funcionalidades e não usando de diferentes sockets ao para responder na thread, uma só thread ao invés de 3.
