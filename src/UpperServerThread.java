@@ -5,7 +5,6 @@ import java.util.*;
 public class UpperServerThread extends Thread {
 
   protected DatagramSocket socket = null;
-  protected String service;
   protected static HashMap<Peer, String> clubeDoBolinha;
 
   public UpperServerThread() throws IOException {
@@ -14,12 +13,12 @@ public class UpperServerThread extends Thread {
 
   public UpperServerThread(String name) throws IOException {
     super(name);
-    socket = new DatagramSocket(Integer.parseInt(service));
+    socket = new DatagramSocket(Integer.parseInt(name));
   }
 
   public void run() {
     while (true) {
-    	if(socket.getPort() == 4500) { //porta para login
+    	if(socket.getLocalPort() == 4500) { //porta para login
           try {
             byte[] texto = new byte[256];
             // recebe datagrama
@@ -40,9 +39,9 @@ public class UpperServerThread extends Thread {
             e.printStackTrace();
             break;
           }
-    	} else if (socket.getPort() == 4600) { //porta para responder as queries
+    	} else if (socket.getLocalPort() == 4600) { //porta para responder as queries
     		
-    	} else if (socket.getPort() == 4700) { //porta para checar se peer se encontra na rede
+    	} else if (socket.getLocalPort() == 4700) { //porta para checar se peer se encontra na rede
     		
     	}
     }
