@@ -14,6 +14,7 @@ public class UpperServerThread extends Thread {
   public UpperServerThread(String name) throws IOException {
     super(name);
     socket = new DatagramSocket(Integer.parseInt(name));
+    clubeDoBolinha = new ArrayList<Peer>();
   }
 
   public void run() {
@@ -42,16 +43,17 @@ public class UpperServerThread extends Thread {
             // processa o que foi recebido
             String recebido = new String(pacote.getData(), 0, pacote.getLength());
             //System.out.println(recebido.toString());
-            System.out.println(pacote.getAddress().toString());
-            ArrayList<String> archives = new ArrayList<String>(Arrays.asList(recebido.split(" ")));
+            //System.out.println(pacote.getAddress().toString());
+            ArrayList<String> archives = new ArrayList<String>(Arrays.asList(recebido.split(",")));
             //formato da mensagem ip nome arquivos,separados,por,virgula
-            clubeDoBolinha.add(new Peer(pacote.getAddress().toString(), archives));
-            System.out.println("Peers in the network");
-            for(Peer p: clubeDoBolinha) {
-            	System.out.println("IP: "+p.getIp());
-            	System.out.println("Resources: "+p.getResources().toString()+"\n");
-            }
+            Peer newPeer = new Peer(pacote.getAddress().toString(), archives);
+            clubeDoBolinha.add(newPeer);
             // envia a resposta de volta ao cliente
+            for(Peer p: clubeDoBolinha) {
+            	System.out.println("Peer: ");
+    	      	System.out.println("IP: "+p.getIp());
+    	      	System.out.println("Resources: "+p.getResources().toString()+"\n------------------------\n");
+    	      }
             InetAddress endereco = pacote.getAddress();
             int porta = pacote.getPort();
             pacote = new DatagramPacket(texto, texto.length, endereco, porta);
@@ -69,5 +71,6 @@ public class UpperServerThread extends Thread {
     socket.close();
     System.out.println("Servidor encerrado...");
   }
+
 
 }
