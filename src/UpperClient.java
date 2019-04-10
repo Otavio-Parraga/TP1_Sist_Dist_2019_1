@@ -4,15 +4,18 @@ import java.util.*;
 
 public class UpperClient {
 
+	@SuppressWarnings("resource")
 	public static void main(String[] args) throws IOException {
 		Scanner in = new Scanner(System.in);
 		byte[] texto = new byte[256];
 		DatagramSocket socket = new DatagramSocket();
 		String auxiliar;
+		
 		if (args.length != 2) {
 			System.out.println("Uso: java UpperClient <maquina> <texto>");
 			return;
 		}
+		
 		while (true) {
 			auxiliar  = in.nextLine();
 			if (auxiliar.equals("1")) { // realiza o login
@@ -28,8 +31,6 @@ public class UpperClient {
 				// mostra a resposta
 				String resposta = new String(pacote.getData(), 0, pacote.getLength());
 				System.out.println("Texto recebido do servidor: " + resposta);
-				// fecha o socket
-				socket.close();
 			} else if(auxiliar.equals("2")) { //realiza uma pesquisa por peers com o recurso
 				System.out.println("What resource do you want?");
 				texto = in.nextLine().getBytes();
@@ -43,16 +44,23 @@ public class UpperClient {
 				socket.receive(pacote);
 				
 				//printa a resposta
-				String resposta = new String(pacote.getData(), 0, pacote.getLength());
+				String resposta = new String(pacote.getData(), pacote.getOffset(), pacote.getLength());
 				System.out.println("Peers que possuem o recurso: " + resposta);
 				
 			} else if(auxiliar.equals("3")) { //
 				System.out.println("Get resource from peer");
 				
+			}else if (auxiliar.equals("0")) {
+				System.out.println("Closed");
+				break;
 			}else if(auxiliar != null) {
-				System.out.println("Write 1 to login and 2 to query");
-			}
+				break;
+			} 
+			
 		}
+		// fecha o socket
+		socket.close();
+		in.close();
 	}
 
 }
