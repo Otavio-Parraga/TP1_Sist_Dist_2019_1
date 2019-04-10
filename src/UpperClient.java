@@ -4,7 +4,6 @@ import java.util.*;
 
 public class UpperClient {
 
-	@SuppressWarnings("resource")
 	public static void main(String[] args) throws IOException {
 		Scanner in = new Scanner(System.in);
 		byte[] texto = new byte[256];
@@ -26,11 +25,13 @@ public class UpperClient {
 				DatagramPacket pacote = new DatagramPacket(texto, texto.length, endereco, 4500);
 				socket.send(pacote);
 				// obtem a resposta
+				texto = new byte[256];
 				pacote = new DatagramPacket(texto, texto.length);
 				socket.receive(pacote);
 				// mostra a resposta
 				String resposta = new String(pacote.getData(), 0, pacote.getLength());
 				System.out.println("Texto recebido do servidor: " + resposta);
+				
 			} else if(auxiliar.equals("2")) { //realiza uma pesquisa por peers com o recurso
 				System.out.println("What resource do you want?");
 				texto = in.nextLine().getBytes();
@@ -40,12 +41,14 @@ public class UpperClient {
 				socket.send(pacote);
 				
 				//recebe string com os diferentes peers no que o servidor possui
+				texto = new byte[256];
 				pacote = new DatagramPacket(texto, texto.length);
 				socket.receive(pacote);
 				
 				//printa a resposta
-				String resposta = new String(pacote.getData(), pacote.getOffset(), pacote.getLength());
-				System.out.println("Peers que possuem o recurso: " + resposta);
+				String resposta = new String(pacote.getData(), 0, pacote.getLength());				
+				System.out.println("Peers que possuem o recurso: ");
+				System.out.println(resposta);
 				
 			} else if(auxiliar.equals("3")) { //
 				System.out.println("Get resource from peer");
