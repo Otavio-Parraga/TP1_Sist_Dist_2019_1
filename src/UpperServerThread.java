@@ -80,7 +80,7 @@ public class UpperServerThread extends Thread {
 					break;
 				}
 			} else if (socket.getLocalPort() == 4700) { // porta para checar se peer se encontra na rede
-
+				
 			}
 		}
 		socket.close();
