@@ -10,6 +10,8 @@ public class UpperClient {
 		DatagramSocket socket = new DatagramSocket();
 		String auxiliar;
 		
+		
+		
 		if (args.length != 2) {
 			System.out.println("Uso: java UpperClient <maquina> <texto>");
 			return;
@@ -31,9 +33,10 @@ public class UpperClient {
 				// mostra a resposta
 				String resposta = new String(pacote.getData(), 0, pacote.getLength());
 				System.out.println("Texto recebido do servidor: " + resposta);
+				new UpperClientThread("4700").start();
 				
 			} else if(auxiliar.equals("2")) { //realiza uma pesquisa por peers com o recurso
-				System.out.println("What resource do you want?");
+				System.out.println("Por qual(is) recursos voce procura?");
 				texto = in.nextLine().getBytes();
 				//envia o pacote perguntando o recurso
 				InetAddress endereco = InetAddress.getByName(args[0]);
@@ -47,11 +50,19 @@ public class UpperClient {
 				
 				//printa a resposta
 				String resposta = new String(pacote.getData(), 0, pacote.getLength());				
-				System.out.println("Peers que possuem o recurso: ");
+				System.out.println("Resposta do Servidor: ");
 				System.out.println(resposta);
 				
-			} else if(auxiliar.equals("3")) { //
-				System.out.println("Get resource from peer");
+			} else if(auxiliar.equals("3")) { // pega recurso de outro peer
+				System.out.println("<ip_peer> <name_resource>");
+				String ipAndResource = in.nextLine();
+				//envia msg para outro peer
+				InetAddress endereco = InetAddress.getByName(ipAndResource.split(" ")[0]);
+				texto = ipAndResource.getBytes();
+				DatagramPacket pacote = new DatagramPacket(texto, texto.length, endereco, 4700);
+				socket.send(pacote);
+				
+				//recebe arquivo
 				
 			}else if (auxiliar.equals("0")) {
 				System.out.println("Closed");

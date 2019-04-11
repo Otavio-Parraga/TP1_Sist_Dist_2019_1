@@ -60,6 +60,7 @@ public class UpperServerThread extends Thread {
 					ArrayList<String> recursosSocilitados = new ArrayList<String>(Arrays.asList(recebido.split(",")));
 					String peersWithResources = "";
 					for (String recurso : recursosSocilitados) {
+						peersWithResources = peersWithResources.concat("Recurso "+recurso+" possuido pelos peers");
 						for (Peer p : clubeDoBolinha) {
 							if(p.getResources().toString().contains(recurso)) {
 								peersWithResources = peersWithResources.concat(p.getIp()+",");
