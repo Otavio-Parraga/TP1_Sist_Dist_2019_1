@@ -3,6 +3,7 @@ import java.net.*;
 import java.util.*;
 
 public class Upper {
+	static File file;
 
 	public static void main(String[] args) throws IOException {
 		Scanner in = new Scanner(System.in);
@@ -30,14 +31,16 @@ public class Upper {
 				while (true) {
 					System.out.println("Digite 1 para procurar um recurso e 2 para coletar um recurso.");
 					auxiliar = in.nextLine();
-					if (auxiliar.equals("1")) { // realiza uma pesquisa por peers com o recurso
+					if (auxiliar.equals("1")) { // realiza uma pesquisa por
+												// peers com o recurso
 						System.out.println("Por qual(is) recursos voce procura?");
 						texto = in.nextLine().getBytes();
 						// envia o pacote perguntando o recurso
 						pacote = new DatagramPacket(texto, texto.length, endereco, 4600);
 						socket.send(pacote);
 
-						// recebe string com os diferentes peers no que o servidor possui
+						// recebe string com os diferentes peers no que o
+						// servidor possui
 						texto = new byte[256];
 						pacote = new DatagramPacket(texto, texto.length);
 						socket.receive(pacote);
@@ -47,7 +50,8 @@ public class Upper {
 						System.out.println("Resposta do Servidor: ");
 						System.out.println(resposta);
 
-					} else if (auxiliar.equals("3")) { // pega recurso de outro peer
+					} else if (auxiliar.equals("3")) { // pega recurso de outro
+														// peer
 						System.out.println("Digite: <ip_peer> <name_resource>");
 						String ipAndResource = in.nextLine();
 						// envia msg para outro peer
@@ -57,11 +61,14 @@ public class Upper {
 						socket.send(pacote);
 
 						// recebe arquivo
-
-					} else if (auxiliar.equals("0")) {
-						System.out.println("Closed");
-						break;
+						texto = new byte[2000];
+						socket.receive(pacote);
+						byte[] fileBytes = pacote.getData();
+						String fileString = new String(fileBytes);
+						file = new File("..\\files\\" + fileString.split("-")[0]);
+						writeByte(pacote.getData());
 					} else if (auxiliar != null) {
+						System.out.println("Closed");
 						break;
 					}
 
@@ -75,8 +82,10 @@ public class Upper {
 		} else if (args[0].equals("-s")) {
 			System.out.println("Iniciado o servidor");
 			new UpperServerThread("4500").start(); // thread para login
-			new UpperServerThread("4600").start(); // thread para procurar por recursos
-			new UpperServerThread("4700").start(); // thread para certificar que esta na rede
+			new UpperServerThread("4600").start(); // thread para procurar por
+													// recursos
+			new UpperServerThread("4700").start(); // thread para certificar que
+													// esta na rede
 			new UpperManagerThread().start();
 		} else {
 			System.out.println("Funcionamento: java -c <host_server> <recursos> para iniciar um cliente");
@@ -85,6 +94,19 @@ public class Upper {
 		// fecha o socket
 		socket.close();
 		in.close();
+	}
+
+	static void writeByte(byte[] bytes) {
+		try {
+			OutputStream os = new FileOutputStream(file);
+			os.write(bytes);
+			System.out.println("Successfully" + " byte inserted");
+			os.close();
+		}
+
+		catch (Exception e) {
+			System.out.println("Exception: " + e);
+		}
 	}
 
 }

@@ -1,7 +1,9 @@
+import java.io.File;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.nio.file.Files;
 
 public class UpperClientThread extends Thread {
 
@@ -35,9 +37,24 @@ public class UpperClientThread extends Thread {
 					}
 				}
 
-			} else if (socket.getLocalPort() == 4666) { // recebe requisi��o de download
-				// https://stackoverflow.com/questions/9520911/java-sending-and-receiving-file-byte-over-sockets
-
+			} else if (socket.getLocalPort() == 4666) { // recebe requisicao de download
+				try{
+				byte[] texto = new byte[256];
+				DatagramPacket pacote = new DatagramPacket(texto, texto.length);
+				socket.receive(pacote);
+				String recebido = new String(pacote.getData(), 0, pacote.getLength());
+				
+				File myFile = new File ("..\\files\\"+recebido);
+				String stringFile = new String(Files.readAllBytes(myFile.toPath()));
+	            String str = recebido.concat("-"+stringFile);
+	            byte[] data = str.getBytes();
+	            DatagramPacket sendPacket = new DatagramPacket(data, data.length, pacote.getAddress(), 4666);
+	            socket.send(sendPacket);
+	            socket.close();
+				
+				}catch(IOException e){
+					e.printStackTrace();
+				}
 			}
 		}
 	}
