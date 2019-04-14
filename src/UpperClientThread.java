@@ -42,11 +42,11 @@ public class UpperClientThread extends Thread {
 				byte[] texto = new byte[256];
 				DatagramPacket pacote = new DatagramPacket(texto, texto.length);
 				socket.receive(pacote);
-				String recebido = new String(pacote.getData(), 0, pacote.getLength());
+				String[] recebido = new String(pacote.getData(), 0, pacote.getLength()).split(" ");
 				
-				File myFile = new File ("..\\files\\"+recebido);
+				File myFile = new File ("..\\files\\"+recebido[1]);
 				String stringFile = new String(Files.readAllBytes(myFile.toPath()));
-	            String str = recebido.concat("-"+stringFile);
+	            String str = recebido[1].concat("-"+stringFile);
 	            byte[] data = str.getBytes();
 	            DatagramPacket sendPacket = new DatagramPacket(data, data.length, pacote.getAddress(), 4666);
 	            socket.send(sendPacket);

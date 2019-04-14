@@ -63,11 +63,12 @@ public class UpperServerThread extends Thread {
 					socket.receive(pacote);
 					// interpreta o que foi recebido
 					String recebido = new String(pacote.getData(), 0, pacote.getLength());
-					ArrayList<String> recursosSocilitados = new ArrayList<String>(Arrays.asList(recebido.split(",")));
+					//ArrayList<String> recursosSocilitados = new ArrayList<String>(Arrays.asList(recebido.split(",")));
+					String[] recursosSocilitados = recebido.split(",");
 					String peersWithResources = "";
-					Iterator<Entry<Peer, Integer>> i = clubeDoBolinha.entrySet().iterator();
 					for (String recurso : recursosSocilitados) {
 						peersWithResources = peersWithResources.concat("Recurso " + recurso + " possuido pelos peers");
+						Iterator<Entry<Peer, Integer>> i = clubeDoBolinha.entrySet().iterator();
 						while (i.hasNext()) {
 							Map.Entry<Peer, Integer> mapElement = (Map.Entry<Peer, Integer>) i.next();
 							if (mapElement.getKey().getResources().toString().contains(recurso)) {

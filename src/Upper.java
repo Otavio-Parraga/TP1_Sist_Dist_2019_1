@@ -50,7 +50,7 @@ public class Upper {
 						System.out.println("Resposta do Servidor: ");
 						System.out.println(resposta);
 
-					} else if (auxiliar.equals("3")) { // pega recurso de outro
+					} else if (auxiliar.equals("2")) { // pega recurso de outro
 														// peer
 						System.out.println("Digite: <ip_peer> <name_resource>");
 						String ipAndResource = in.nextLine();
