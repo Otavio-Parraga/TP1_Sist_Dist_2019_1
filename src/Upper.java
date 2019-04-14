@@ -65,11 +65,10 @@ public class Upper {
 						socket.receive(pacote);
 						byte[] fileBytes = pacote.getData();
 						String fileString = new String(fileBytes);
-						file = new File("..\\files\\" + fileString.split("-")[0]);
-						writeByte(pacote.getData());
-					} else if (auxiliar != null) {
-						System.out.println("Closed");
-						break;
+						file = new File("..\\files\\"+fileString.split("-")[0]);
+						fileString = fileString.split("-")[1];
+						byte[] conteudo = fileString.getBytes();
+						writeByte(conteudo);
 					}
 
 				}
