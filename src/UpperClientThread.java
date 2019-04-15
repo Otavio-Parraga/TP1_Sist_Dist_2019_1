@@ -43,12 +43,12 @@ public class UpperClientThread extends Thread {
 				DatagramPacket pacote = new DatagramPacket(texto, texto.length);
 				socket.receive(pacote);
 				String[] recebido = new String(pacote.getData(), 0, pacote.getLength()).split(" ");
+				System.out.println(recebido[0]);
 				
-				File myFile = new File ("..\\files\\"+recebido[1]);
+				File myFile = new File ("../files/"+recebido[0]);
 				String stringFile = new String(Files.readAllBytes(myFile.toPath()));
-	            String str = recebido[1].concat("-"+stringFile);
-	            byte[] data = str.getBytes();
-	            DatagramPacket sendPacket = new DatagramPacket(data, data.length, pacote.getAddress(), 4666);
+	            String str = recebido[0].concat("  "+stringFile);
+	            DatagramPacket sendPacket = new DatagramPacket(str.getBytes(), str.getBytes().length, pacote.getAddress(), pacote.getPort());
 	            socket.send(sendPacket);
 	            socket.close();
 				

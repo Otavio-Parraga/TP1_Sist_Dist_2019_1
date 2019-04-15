@@ -118,8 +118,6 @@ public class UpperServerThread extends Thread {
 			Map.Entry<Peer, Integer> mapElement = (Map.Entry<Peer, Integer>) i.next();
 			if (mapElement.getKey().getIp().equals(ip)) {
 				clubeDoBolinha.replace(mapElement.getKey(), 2);
-			}else {
-				System.out.println("Peer de ip: " + ip+" enviou mensagem, mas nao esta na rede");
 			}
 		}
 	}

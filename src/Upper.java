@@ -56,17 +56,19 @@ public class Upper {
 						String ipAndResource = in.nextLine();
 						// envia msg para outro peer
 						endereco = InetAddress.getByName(ipAndResource.split(" ")[0]);
-						texto = ipAndResource.getBytes();
+						texto = ipAndResource.split(" ")[1].getBytes();
 						pacote = new DatagramPacket(texto, texto.length, endereco, 4666);
 						socket.send(pacote);
 
 						// recebe arquivo
 						texto = new byte[2000];
+						pacote = new DatagramPacket(texto, texto.length, endereco, 4666);
 						socket.receive(pacote);
 						byte[] fileBytes = pacote.getData();
 						String fileString = new String(fileBytes);
-						file = new File("..\\files\\"+fileString.split("-")[0]);
-						fileString = fileString.split("-")[1];
+						file = new File("../files/"+fileString.split("-")[0]);
+						file.createNewFile();
+						fileString = fileString.split("  ")[1];
 						byte[] conteudo = fileString.getBytes();
 						writeByte(conteudo);
 					}
