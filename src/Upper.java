@@ -66,8 +66,14 @@ public class Upper {
 						socket.receive(pacote);
 						byte[] fileBytes = pacote.getData();
 						String fileString = new String(fileBytes);
-						file = new File("../files/"+fileString.split("-")[0]);
-						file.createNewFile();
+						System.out.println("../files/"+ fileString.split("  ")[0]);
+						file = new File("../files/"+ fileString.split("  ")[0]);
+						if(file.createNewFile()) {
+							System.out.println("Arquivo criado com sucesso");
+						} else {
+							System.out.println("Arquivo ja existe");
+						}
+						
 						fileString = fileString.split("  ")[1];
 						byte[] conteudo = fileString.getBytes();
 						writeByte(conteudo);
