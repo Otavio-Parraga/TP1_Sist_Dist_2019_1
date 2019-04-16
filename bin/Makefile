@@ -1,12 +1,9 @@
-all:				 Upper.class UpperClientThread.class Peer.class UpperServerThread
+all:				 Upper.class
 
 	
 
 UpperServerThread.class:	UpperServerThread.java
 				@javac UpperServerThread.java
-				
-UpperClientThread.class:	UpperClientThread.java
-				@javac UpperClientThread.java
 
 Upper.class:		Upper.java
 				@javac Upper.java
